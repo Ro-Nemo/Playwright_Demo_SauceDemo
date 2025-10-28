@@ -16,7 +16,7 @@ const fname = faker.person.firstName();
 const lname = faker.person.lastName();
 const zipcode = faker.location.zipCode();
 
-//GIVEN I have the admin credentials to the SauceDemo portal and begin a pusrchase.
+//GIVEN I have the user credentials to access the SauceDemo portal and begin an online purchase.
 await page.goto('https://www.saucedemo.com/');
 await expect(page.getByText('Swag Labs')).toBeVisible();
 const loginPage = new LoginPage(page);
