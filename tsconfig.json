@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "nodenext",
+        "moduleResolution": "nodenext", // or "Node10", "Node16", "Node20", "NodeNext"
+        "strict": false, // Disables all strict type-checking options
+        "noImplicitAny": true, // Ensures that variables with an unknown type are explicitly defined, avoiding the default any type
+        "strictNullChecks": true, // Prevents null and undefined from being assigned to any type unless explicitly allowed, enhancing null safety.
+        "lib": ["esnext", "DOM"],
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "types": ["@playwright/test"],
+        "outDir": "../tests-out",
+        "sourceMap": true,
+        "incremental": true,
+        "tsBuildInfoFile": ".tsbuildinfo",
+        "composite": true,
+        "skipDefaultLibCheck": true,
+        "noEmit": true,
+        "isolatedModules": true,
+        "declaration": true,
+        "declarationMap": true,
+        "diagnostics": true,
+    },
+}

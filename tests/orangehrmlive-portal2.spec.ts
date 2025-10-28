@@ -1,0 +1,142 @@
+import { test, expect } from '@playwright/test';
+import { faker } from '@faker-js/faker/locale/en';
+import dotenv from 'dotenv';
+import path from 'path';
+import { LoginPage } from '../pages/loginhrmPage';
+import { UserPage } from '../pages/userhrmPage';
+import { AdminPage } from '../pages/adminhrmPage';
+
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
+
+
+test('CRUD in OrangeHRM portal', async ({ page }) => {
+
+const userid = process.env.PLAYWRIGHT_USER_NAME  as string;
+const password = process.env.PLAYWRIGHT_PASSWORD  as string;
+// const userid = process.env.PLAYWRIGHT_USER_NAME || 'Admin';
+// const password = process.env.PLAYWRIGHT_PASSWORD || 'admin123';
+const fname = faker.person.firstName();
+//const lname = faker.person.lastName();
+const lname = 'github.com/Ro-Nemo';
+const employName = fname + ' ' + lname;
+const randNumb = faker.string.numeric(8);
+const employNumb = '9' + randNumb;
+const username = 'admin' + fname + lname;
+
+
+//Precondition: An Employee must be created in PIM before it can be assigned as an Admin user" 
+
+//GIVEN I have the admin credentials to the orangehrmlive portal and create and edit a new employee.
+await page.goto('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
+const loginPage = new LoginPage(page);
+await loginPage.login(userid, password);
+// await page.getByRole('textbox', { name: 'Username' }).fill(userid);
+// await page.getByRole('textbox', { name: 'Password' }).fill(password);
+// await page.getByRole('button', { name: 'Login' }).click();
+await expect(page.getByRole('heading', { name: 'Dashboard' })).toBeVisible();
+
+//WHEN I Navigate to "PIM" on the side navigation bar. 
+await page.getByRole('link', { name: 'PIM' }).click();
+await expect(page.getByRole('heading', { name: 'Employee Information' })).toBeVisible();
+
+//AND I Click on "Add." 
+await page.getByRole('button', { name: ' Add' }).click();
+await expect(page.getByRole('heading', { name: 'Add Employee' })).toBeVisible();
+
+//AND I create a new employee user
+const userPage = new UserPage(page);
+await userPage.user(fname, lname, employNumb);
+// await page.getByRole('textbox', { name: 'First Name' }).fill(fname);
+// await page.getByRole('textbox', { name: 'Last Name' }).fill(lname);
+// await page.getByRole('textbox').nth(4).dblclick();
+// await page.getByRole('textbox').nth(4).fill(employNumb);
+// await page.getByRole('button', { name: 'Save' }).click();
+await expect(page.getByRole('heading', { name: 'Personal Details' })).toBeVisible();
+
+//AND I search the new employee
+await page.getByRole('link', { name: 'PIM' }).click();
+await expect(page.getByRole('heading', { name: 'Employee Information' })).toBeVisible();
+await page.getByRole('textbox', { name: 'Type for hints...' }).first().fill(employName);
+await page.getByRole('option', { name: employName }).click();
+await page.getByRole('button', { name: 'Search' }).click();
+await expect(page.getByText(employNumb)).toBeVisible();
+
+// //THEN I edit the new employee
+// await page.getByRole('button', { name: '' }).click();
+// await expect(page.getByRole('heading', { name: 'Personal Details' })).toBeVisible();
+// const randNumb2 = faker.string.numeric(8);
+// const employNumb2 = '9' + randNumb2;
+// await page.locator('div').filter({ hasText: /^Employee IdOther Id$/ }).getByRole('textbox').first().dblclick();
+// await page.locator('div').filter({ hasText: /^Employee IdOther Id$/ }).getByRole('textbox').first().fill(employNumb2);
+// await page.locator('form').filter({ hasText: 'Employee Full NameEmployee' }).getByRole('button').click();
+// await page.getByRole('link', { name: 'PIM' }).click();
+// await expect(page.getByRole('heading', { name: 'Employee Information' })).toBeVisible();
+// await page.getByRole('textbox', { name: 'Type for hints...' }).first().fill(employName);
+// await page.getByRole('option', { name: employName }).click();
+// await page.getByRole('button', { name: 'Search' }).click();
+// await expect(page.getByText(employNumb2)).toBeVisible();
+
+
+//GIVEN I have the admin credentials to assign a new employee as an Admin User.
+
+//WHEN I navigate to "Admin" on the side navigation bar. 
+await page.getByRole('link', { name: 'Admin' }).click();
+await expect(page.getByRole('heading', { name: 'System Users' })).toBeVisible();
+
+//AND I assign the new employee as an Admin User
+await page.getByRole('button', { name: ' Add' }).click();
+await expect(page.getByRole('heading', { name: 'Add User' })).toBeVisible();
+const adminPage = new AdminPage(page);
+await adminPage.user(employName, username, password);
+// await page.locator('form i').first().click();
+// await page.getByRole('option', { name: 'Admin' }).locator('span').click();
+// await page.getByRole('textbox', { name: 'Type for hints...' }).click();
+// await page.getByRole('textbox', { name: 'Type for hints...' }).fill(employName);
+// await page.getByText(employName).click();
+// await page.locator('form i').nth(1).click();
+// await page.getByText('Enabled').click();
+// await page.getByRole('textbox').nth(2).fill(username);
+// await page.getByRole('textbox').nth(3).fill(password);
+// await page.getByRole('textbox').nth(4).fill(password);
+// await page.getByRole('button', { name: 'Save' }).click();
+await expect(page.getByRole('heading', { name: 'System Users' })).toBeVisible();
+
+//AND I search the the new Admin User
+await page.getByRole('textbox').nth(1).click();
+await page.getByRole('textbox').nth(1).fill(username);
+await page.getByRole('button', { name: 'Search' }).click();
+await expect(page.getByText(employName)).toBeVisible();
+
+// //AND I edit the new admin user
+// await page.getByRole('button', { name: '' }).click();
+// await expect(page.getByRole('heading', { name: 'Edit User' })).toBeVisible();
+// await page.locator('form i').nth(1).click();
+// await page.getByText('Disabled').click();
+// await page.getByRole('button', { name: 'Save' }).click();
+// await expect(page.getByRole('heading', { name: 'System Users' })).toBeVisible();
+// await page.getByRole('textbox').nth(1).click();
+// await page.getByRole('textbox').nth(1).fill(username);
+// await page.getByRole('button', { name: 'Search' }).click();
+// await expect(page.getByText(employName)).toBeVisible();
+// await expect(page.getByText('Disabled')).toBeVisible();
+
+// //THEN I delete the Admin role for the new employee
+// await page.getByRole('button', { name: '' }).click();
+// await page.getByRole('button', { name: ' Yes, Delete' }).click();
+// await page.getByRole('button', { name: 'Search' }).click();
+// await expect(page.getByText(employName)).not.toBeVisible();
+
+// //AND I delete the new employee
+// await page.getByRole('link', { name: 'PIM' }).click();
+// await expect(page.getByRole('heading', { name: 'Employee Information' })).toBeVisible();
+// await page.getByRole('textbox', { name: 'Type for hints...' }).first().click();
+// await page.getByRole('textbox', { name: 'Type for hints...' }).first().fill(employName);
+// await page.getByRole('option', { name: employName }).click();
+// await page.getByRole('button', { name: 'Search' }).click();
+// await page.getByRole('button', { name: '' }).click();
+// await page.getByRole('button', { name: ' Yes, Delete' }).click();
+// await page.getByRole('button', { name: 'Search' }).click();
+// await expect(page.getByText(employNumb2)).not.toBeVisible();
+
+});
+
