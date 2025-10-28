@@ -1,4 +1,4 @@
-Playwright - Automated CRUD test demo in <a href="https://www.saucedemo.com/">SauceDemo</a>
+Playwright - Automated online shopping test demo in <a href="https://www.saucedemo.com/">SauceDemo</a>
 
 Swag Labs, accessible via SauceDemo, is a demo e-commerce website designed for practicing automation testing scenarios, including login, product browsing, and checkout processes. 
 It provides a controlled environment for testers to practice scripting and testing various aspects of e-commerce platforms.
@@ -33,7 +33,7 @@ Demo Video Available
   
   <a href="https://fakerjs.dev/guide/">FakerJS</a> - Popular library that generates fake (but reasonable) data.
 
-  <a href="https://playwright.dev/docs/pom">Page Object Models</a> - Optimize maintenance in Login, User and Admin Pages.
+  <a href="https://playwright.dev/docs/pom">Page Object Models</a> - Optimize maintenance in Login and User Pages.
 
   <a href="https://playwright.dev/docs/test-parameterize">Environment Variables</a> - Not to store secrets like usernames and passwords in the source code
 
